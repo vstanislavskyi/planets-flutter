@@ -1,3 +1,4 @@
+import 'package:elon_musk/ui/details/detail_page.dart';
 import 'package:flutter/material.dart';
 import 'package:elon_musk/model/planets.dart';
 
@@ -93,31 +94,34 @@ class PlanetRow extends StatelessWidget {
     final planetThumbnail = new Container(
       margin: new EdgeInsets.symmetric(vertical: 16.0),
       alignment: FractionalOffset.centerLeft,
-      child: new Image(
-        //image: new AssetImage("assets/img/mars.png"),
-        image: new AssetImage(planet.image),
-        width: 92.0,
-        height: 92.0,
+      child: new Hero(
+        tag: "planet-hero-${planet.id}",
+        child: new Image(
+          //image: new AssetImage("assets/img/mars.png"),
+          image: new AssetImage(planet.image),
+          width: 92.0,
+          height: 92.0,
+        ),
       ),
     );
 
-    return new Container(
-//      margin: const EdgeInsets.only(
-//        top: 16.0,
-//        bottom: 16.0,
-//        left: 24.0,
-//        right: 24.0,
-//      ),
-      height: 120.0,
-      margin: const EdgeInsets.symmetric(
-        vertical: 16.0,
-        horizontal: 24.0,
-      ),
-      child: new Stack(
-        children: <Widget>[
-          planetCard,
-          planetThumbnail,
-        ],
+    return new GestureDetector(
+      //onTap: () => Navigator.pushNamed(context, "/detail"),
+      onTap: () => Navigator.of(context).push(new PageRouteBuilder(
+            pageBuilder: (_, __, ___) => new DetailPage(planet),
+          )),
+      child: new Container(
+        height: 120.0,
+        margin: const EdgeInsets.symmetric(
+          vertical: 16.0,
+          horizontal: 24.0,
+        ),
+        child: new Stack(
+          children: <Widget>[
+            planetCard,
+            planetThumbnail,
+          ],
+        ),
       ),
     );
   }

@@ -47,7 +47,7 @@ class PlanetRow extends StatelessWidget {
             style: subHeaderTextStyle,
           ),
           new Container(
-            margin: new EdgeInsets.symmetric(vertical: 8.0),
+            margin: new EdgeInsets.symmetric(vertical: 7.0),
             height: 2.0,
             width: 18.0,
             color: new Color(0xFF00C6FF),
@@ -75,7 +75,7 @@ class PlanetRow extends StatelessWidget {
     );
 
     final planetCard = new Container(
-      height: 124.0,
+      height: 120.0,
       margin: const EdgeInsets.only(left: 46.0),
       decoration: new BoxDecoration(
           color: new Color(0xff333366),

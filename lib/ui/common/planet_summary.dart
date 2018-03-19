@@ -1,11 +1,15 @@
 import 'package:elon_musk/ui/details/detail_page.dart';
+import 'package:elon_musk/ui/common/separator.dart';
+import 'package:elon_musk/ui/text_style.dart';
 import 'package:flutter/material.dart';
 import 'package:elon_musk/model/planets.dart';
 
-class PlanetRow extends StatelessWidget {
+class PlanetSummary extends StatelessWidget {
   final Planet planet;
+  final bool horizontal;
 
-  PlanetRow(this.planet);
+  PlanetSummary(this.planet, {this.horizontal = true});
+  PlanetSummary.vertical(this.planet) : horizontal = false;
 
   @override
   Widget build(BuildContext context) {
@@ -28,10 +32,13 @@ class PlanetRow extends StatelessWidget {
     final subHeaderTextStyle = regularTextStyle.copyWith(fontSize: 12.0);
 
     final planetCardContent = new Container(
-      margin: new EdgeInsets.fromLTRB(76.0, 16.0, 16.0, 16.0),
+      margin: horizontal
+          ? new EdgeInsets.fromLTRB(76.0, 16.0, 16.0, 16.0)
+          : new EdgeInsets.fromLTRB(16.0, 42.0, 16.0, 16.0),
       constraints: new BoxConstraints.expand(),
       child: new Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment:
+            horizontal ? CrossAxisAlignment.start : CrossAxisAlignment.center,
         children: <Widget>[
           new Container(
             height: 4.0,
@@ -47,15 +54,12 @@ class PlanetRow extends StatelessWidget {
             planet.location,
             style: subHeaderTextStyle,
           ),
-          new Container(
-            margin: new EdgeInsets.symmetric(vertical: 7.0),
-            height: 2.0,
-            width: 18.0,
-            color: new Color(0xFF00C6FF),
-          ),
+          new Separator(),
           new Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               new Expanded(
+                flex: horizontal ? 1 : 0,
                 child: _planetValue(
                   value: planet.distance,
                   valueStyle: regularTextStyle,
@@ -63,6 +67,7 @@ class PlanetRow extends StatelessWidget {
                 ),
               ),
               new Expanded(
+                flex: horizontal ? 1 : 0,
                 child: _planetValue(
                   value: planet.gravity,
                   valueStyle: regularTextStyle,
@@ -76,8 +81,10 @@ class PlanetRow extends StatelessWidget {
     );
 
     final planetCard = new Container(
-      height: 120.0,
-      margin: const EdgeInsets.only(left: 46.0),
+      height: horizontal ? 120.0 : 150.0,
+      margin: horizontal
+          ? new EdgeInsets.only(left: 46.0)
+          : new EdgeInsets.only(top: 72.0),
       decoration: new BoxDecoration(
           color: new Color(0xff333366),
           shape: BoxShape.rectangle,
@@ -93,7 +100,8 @@ class PlanetRow extends StatelessWidget {
 
     final planetThumbnail = new Container(
       margin: new EdgeInsets.symmetric(vertical: 16.0),
-      alignment: FractionalOffset.centerLeft,
+      alignment:
+          horizontal ? FractionalOffset.centerLeft : FractionalOffset.center,
       child: new Hero(
         tag: "planet-hero-${planet.id}",
         child: new Image(
@@ -107,11 +115,17 @@ class PlanetRow extends StatelessWidget {
 
     return new GestureDetector(
       //onTap: () => Navigator.pushNamed(context, "/detail"),
-      onTap: () => Navigator.of(context).push(new PageRouteBuilder(
-            pageBuilder: (_, __, ___) => new DetailPage(planet),
-          )),
+      onTap: horizontal
+          ? () => Navigator.of(context).push(new PageRouteBuilder(
+              pageBuilder: (_, __, ___) => new DetailPage(planet),
+              transitionsBuilder:
+                  (context, animation, secondaryAnimation, child) =>
+                      new FadeTransition(
+                        opacity: animation,
+                        child: child,
+                      )))
+          : null,
       child: new Container(
-        height: 120.0,
         margin: const EdgeInsets.symmetric(
           vertical: 16.0,
           horizontal: 24.0,

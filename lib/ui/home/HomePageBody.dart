@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:elon_musk/model/planets.dart';
-import 'package:elon_musk/ui/home/PlanetRow.dart';
+import 'package:elon_musk/ui/common/planet_summary.dart';
 
 class HomePageBody extends StatelessWidget {
   @override
@@ -22,7 +22,7 @@ class HomePageBody extends StatelessWidget {
               sliver: new SliverFixedExtentList(
                 itemExtent: 152.0,
                 delegate: new SliverChildBuilderDelegate(
-                    (context, index) => new PlanetRow(planets[index]),
+                    (context, index) => new PlanetSummary(planets[index]),
                     childCount: planets.length),
               ),
             ),
